@@ -20,18 +20,20 @@
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
 
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
+06/21/2022 2110hrs - application is now functional.  
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+* got help from TA/Audrey/Jamall M.
 
 ## Time Estimates
 
-* Name of feature: ________________________________
+* Name of feature: city-explorer-api
 
-* Estimate of time needed to complete: _____
+* Estimate of time needed to complete: 5hrs
 
-* Start time: _____
+* Start time: 1430
 
-* Finish time: _____
+* Finish time: 2130
 
-* Actual time needed to complete: _____
+* Actual time needed to complete: 7hrs

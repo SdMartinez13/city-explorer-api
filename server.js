@@ -19,18 +19,18 @@ app.use(cors());
 const PORT = process.env.PORT || 3002;
 
 app.get('/' , (req, res) => {
-    res.send('Welcome to our server');
+    return res.send('Welcome to our server');
 }) 
 
 app.get('/weather' ,(request, response) => {
-
+    console.log('hitting weather route');
     let searchQueryCity = request.query.searchQueryCity;
     let cityWeather = weatherData.find((e) => e.city_name.toLowerCase() === searchQueryCity.toLowerCase());
     let selectedCity = cityWeather.data.map(dailyWeather => {
         return new Forcast(dailyWeather);
     });
 
-    response.send(selectedCity);
+    return response.send(selectedCity);
 
 })
 
@@ -41,7 +41,8 @@ class Forecast {
     }
 }
 
-app.get('*' , (req,res) => {    
+app.get('*' , (req, res) => { 
+    console.log('hitting all route');   
     res.send('Page not found here : error');
 })    
 

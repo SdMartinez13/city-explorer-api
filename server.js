@@ -18,9 +18,9 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3002;
 
-// app.get('/' , (req, res) => {
-//     return res.send('Welcome to our server');
-// }) 
+app.get('/' , (req, res) => {
+    return res.send('Welcome to our server');
+}) 
 
 app.get('/weather' ,(request, response) => {
     console.log('hitting weather route');

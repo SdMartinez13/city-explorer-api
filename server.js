@@ -18,7 +18,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3002;
 
-app.get('/' , (req,res) => {
+app.get('/' , (req, res) => {
     res.send('Welcome to our server');
 }) 
 

@@ -11,6 +11,8 @@
 
 * ![WRRC](./public/drawing3.png)
 
+* ![WRRC](./public/drawing4.png)
+
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
 * Were building a back end server to be our weather API.  We're building it from the ground up and will implement it into our front end code.
@@ -67,3 +69,15 @@ Start time: 1430
 Finish time: 2300
 
 Actual time needed to complete: 9hrs
+
+----
+
+Name of feature: refactor add modules and readme
+
+Estimate of time needed to complete: 5hrs
+
+Start time: 1300
+
+Finish time: 1600
+
+Actual time needed to complete: 3hrs

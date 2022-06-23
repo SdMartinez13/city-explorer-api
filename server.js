@@ -24,8 +24,23 @@ const PORT = process.env.PORT || 3002;
 
 async function handleWeather (req, res) {
     let searchQueryCity = req.query.searchQueryCity;
+    // let { searchQueryCity } = req.query;
+
+
+    // neq query to use lat & lon
+
+    const { lat, lon } = req.query;
+
+    console.log(lat, lon, searchQueryCity, 'lat and lon from frontned query')
+
+
     try {
-        let response =  await getWeather(searchQueryCity);
+        // let response =  await getWeather({cityName: searchQueryCity});
+
+
+        let response =  await getWeather({ lat, lon });
+        console.log(response, 'response two from weater api')
+
        res.send(response); 
     } catch (error) {
        console.log(error); 

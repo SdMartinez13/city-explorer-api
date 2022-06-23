@@ -43,9 +43,9 @@ async function handleMovie (req, res) {
 }
 
 
-// app.get('/' , (req, res) => {
-//     return res.send('Welcome to our server');
-// }) 
+app.get('/' , (req, res) => {
+    return res.send('Welcome to our server');
+}) 
 
 
 // GET WEATHER DATA

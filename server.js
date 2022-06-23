@@ -3,17 +3,17 @@
 console.log('first server');
 
 require('dotenv').config();
-const weatherData = require('./data/weather.json');
+// const weatherData = require('./data/weather.json');
 const express = require('express');
 const app = express();
-const axios = require('axios');
+// const axios = require('axios');
 const getWeather = require('./weather.js');
 const getMovies = require('./movie.js');
 
 
 const cors = require('cors');
-const { response } = require('express');
-const res = require('express/lib/response');
+// const { response } = require('express');
+// const res = require('express/lib/response');
 
 
 app.use(cors());
@@ -22,15 +22,36 @@ app.use(cors());
 const PORT = process.env.PORT || 3002;
 
 
-app.get('/' , (req, res) => {
-    return res.send('Welcome to our server');
-}) 
+async function handleWeather (req, res) {
+    let searchQueryCity = req.query.searchQueryCity;
+    try {
+        let response =  await getWeather(searchQueryCity);
+       res.send(response); 
+    } catch (error) {
+       console.log(error); 
+    }
+}
+
+async function handleMovie (req, res) {
+    let movieQueryCity = req.query.movieQueryCity;
+    try {
+        let response =  await getMovies(movieQueryCity);
+       res.send(response); 
+    } catch (error) {
+       console.log(error); 
+    }
+}
+
+
+// app.get('/' , (req, res) => {
+//     return res.send('Welcome to our server');
+// }) 
 
 
 // GET WEATHER DATA
-app.get('/weather', getWeather);
+app.get('/weather', handleWeather);
 // GET MOVIE DATA
-app.get('/movies', getMovies);
+app.get('/movies', handleMovie);
 
 
 // ERRORS
@@ -41,7 +62,7 @@ app.get('*' , (req, res) => {
 
 
 app.use((error, request, response, next) => {
-    response.status(500).send(error.message);
+    response.status(500).send('this is the error', error.message);
 });
 
 

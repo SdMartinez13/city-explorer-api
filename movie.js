@@ -2,24 +2,30 @@
 
 const axios = require('axios');
 
-async function getMovies(cityName) {
 
+async function getMovies(req, res) {
+    
     try {
         
-        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}`
-        let cityMovie = await axios.get(url);
-    
-        let selectedMovie = cityMovie.data.results.map(dailyMovie => {
-            return new Movie(dailyMovie);
+        let searchQueryCity = req.query.searchQueryCity;
+        console.log('hello from the movies')
+        console.log(searchQueryCity);
+        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${searchQueryCity}`
+        console.log(url);
+        let result = await axios.get(url);
         
-        });
-        // console.log(selectedMovie);
-        return selectedMovie;
-    
-    } catch (error) {
-        console.log(error.message);
+
+        let groomedData = result.data.results.map(dailyMovie => new Movie(dailyMovie));
+        res.status(200).send(groomedData);    
+               
+    }
+
+catch(error){
+    res.status(500).send(`error ${error.status}. ${error.message}`);
+
     }
 }
+
 class Movie {
     constructor(cityMovie) {
         this.title = cityMovie.original_title;
@@ -31,4 +37,5 @@ class Movie {
         this.img = cityMovie.poster_path;
     }
 }
+
 module.exports = getMovies;

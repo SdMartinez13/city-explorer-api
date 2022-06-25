@@ -1,86 +1,43 @@
 'use strict';
 
-
-// REQUIRE
-// In our servers, we have to use 'require' instead of import. Here we will list the requirements for server
-
 require('dotenv').config();
-// const weatherData = require('./data/weather.json');
 const express = require('express');
-const app = express();
-// const axios = require('axios');
-const getWeather = require('./modules/weather');
-const getMovies = require('./movie');
-
-// ALLOWS SHARING BETWEEN MULTIPLE COMPUTERS
 const cors = require('cors');
-// const { response } = require('express');
-// const res = require('express/lib/response');
 
+const weather = require('./modules/weather.js');
+const movies=require('./Modules/movie.js');
+
+const app = express();
 app.use(cors());
 
+const PORT=process.env.PORT||3002;
 
-// USE
-// Once we have required something, we have to use it. This is where we assign the required field a variable. React does this in one step with "import." express takes 2 steps: 'require" and 'use.'
-// TELLING APP TO USE CORS
-// define PORT and validate that my .env file is working
-const PORT = process.env.PORT || 3002;
-// if my server is running on 3002, I know something is wrong with my .env file or how I'm importing the values from it.
-app.get('/' , (req,res) => {
-  res.send('Work in progress');
-})
+app.get('/weather', weatherHandler);
 
-// gets weather data 
-app.get('/weather' , weatherHandler);
+app.get('/movies',movieHandler);
 
-function weatherHandler(request, response) {
-  const { searchQueryCity } = request.query;
-  // console.log(searchQueryCity);
-  getWeather(searchQueryCity)
-  .then(summaries => { 
-    response.send(summaries)
-  })
-  
-  .catch((error) => {
-    console.error(error);
-    response.status(200).send('Sorry. Something went wrong!')
-  });
-} 
-
-
-// gets movies data 
-app.get('/movies' , movieHandler);
-
-function movieHandler(request, response) {
-  const { movieQueryCity } = request.query;
-  
-  getMovies(movieQueryCity)
-  .then(summaries => { 
-    
-    response.send(summaries)
-  })
-  
-  .catch((error) => {
-    console.error(error);
-    response.status(200).send('Sorry. Something went wrong!')
-  });
-} 
-
-
-
-
-
-
-// errors
-app.get('*', (request, response) => {
-  response.send('Page not found here : error');
-})
-// CLASSESs
-
-
-
-app.use((error, request, response, next) => {
-  response.status(500).send(error.message);
+app.get('*',(request,response)=>{
+  response.status(404).send('The route you entered does not exist.');
 });
 
-app.listen(PORT, () => console.log(`listening on port ${PORT}`));
+function weatherHandler(request, response) {
+  const { lat, lon } = request.query;
+  weather(lat, lon)
+    .then(summaries => response.send(summaries))
+    .catch((error) => {
+      console.error(error);
+      response.status(200).send('Sorry. Trouble getting weather!');
+    });
+}
+
+function movieHandler(request, response) {
+  const city = request.query.city;
+  movies(city)
+    .then(summaries => response.send(summaries))
+    .catch((error) => {
+      console.error(error);
+      response.status(200).send('Sorry. Trouble getting movies!');
+    });
+}
+
+app.listen(PORT, () => console.log(`Server up on ${PORT}`));

@@ -1,13 +1,15 @@
 'use strict';
 
 const axios = require('axios');
-let cache = require('./modules/cache.js');
+
+let cache = require('./cache.js');
+
+module.exports = getWeather;
 
 async function getWeather(latitude, longitude) {
-  let lat=latitude;
-  let lon=longitude;
-  const key = 'weather: ' + lat + ', ' + lon;
-  const url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&lang=en&lat=${lat}&lon=${lon}&days=5`;
+  const key = 'weather-' + latitude + longitude;
+  const url = `http://api.weatherbit.io/v2.0/forecast/daily/?key=${process.env.WEATHER_API_KEY}&lang=en&lat=${latitude}&lon=${longitude}&days=5`;
+
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 50000)) {
     console.log('Cache hit');
@@ -16,8 +18,10 @@ async function getWeather(latitude, longitude) {
     cache[key] = {};
     cache[key].timestamp = Date.now();
     cache[key].data = await axios.get(url)
-      .then(response => parseWeather(response.data));
+    .then(response => parseWeather(response.data));
   }
+  console.log(cache[key]);
+
   return cache[key].data;
 }
 
@@ -34,9 +38,13 @@ function parseWeather(weatherData) {
 
 class Weather {
   constructor(day) {
-    this.forecast = day.weather.description;
-    this.time = day.datetime;
+    // console.log(day, 'day from Weather constructor')
+    
+    this.date = day.datetime;
+    this.description = day.weather.description;
+    this.temp = day.temp;
+    this.min_temp = day.min_temp;
+    this.max_temp = day.max_temp;
+    // console.log(cityWeather);
   }
 }
-
-module.exports = getWeather;

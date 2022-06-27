@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 const express = require('express');
-const getWeather = require('./my-weather');
+const getWeather = require('./Modules/my-weather');
 const getMovies = require('./my-movie');
 const cors = require('cors');
 

@@ -2,20 +2,33 @@
 
 const axios = require('axios');
 
-async function getWeather(req,res){
-    try{
-      let lat = req.query.lat;
-      let lon = req.query.lon;
-      let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=3&lat=${lat}&lon=${lon}`;
-      let result = await axios.get(url);
-    //   console.log(result);
-      let groomedData = result.data.data.map(dailyWeather => new Forecast(dailyWeather));
-      res.status(200).send(groomedData);
+async function getWeather ({lat, lon, cityName}) {
+    try {
+        
+        // let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=${process.env.WEATHER_API_KEY}&days=3&lat=23&lon=155`;
+
+
+        let url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&days=3&lat=${lat}&lon=${lon}&units=I`;
+
+        console.log(url, 'url ==')
+
+        
+        
+        let cityWeather = await axios.get(url);
+
+        console.log(cityWeather, 'CITY WEATHER TWO')
+
+
+        let selectedCity = cityWeather.data.data.map(dailyWeather => {
+            return new Forecast(dailyWeather);
+        });
+    console.log(selectedCity);
+        return selectedCity;
+    } catch (error) {
+        console.log(error.message);
     }
-    catch(error){
-      res.status(500).send(`Error getting weather: ${error.status}. ${error.message}`);
-    }
-  }
+
+}
 
 class Forecast {
     constructor(cityWeather) {
@@ -24,8 +37,8 @@ class Forecast {
         this.temp = cityWeather.temp;
         this.min_temp = cityWeather.min_temp;
         this.max_temp = cityWeather.max_temp;
-        // console.log(cityWeather);
+        console.log(cityWeather);
     }
 }
 
-module.exports = getWeather;
+module.exports = getWeather;``
